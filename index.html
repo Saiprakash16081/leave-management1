@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leave Management</title>
+</head>
+<body>
+
+    <h1>Leave Management System</h1>
+
+    <h2>Apply for Leave</h2>
+
+    <form method="POST">
+
+        <label>Employee Name:</label><br>
+        <input type="text" name="employee" required>
+        <br><br>
+
+        <label>Leave Type:</label><br>
+        <select name="leave_type" required>
+            <option value="Casual Leave">Casual Leave</option>
+            <option value="Sick Leave">Sick Leave</option>
+            <option value="Earned Leave">Earned Leave</option>
+        </select>
+        <br><br>
+
+        <label>From Date:</label><br>
+        <input type="date" name="from_date" required>
+        <br><br>
+
+        <label>To Date:</label><br>
+        <input type="date" name="to_date" required>
+        <br><br>
+
+        <label>Reason:</label><br>
+        <textarea name="reason" required></textarea>
+        <br><br>
+
+        <button type="submit">Apply Leave</button>
+
+    </form>
+
+    <hr>
+
+    <h2>Leave Applications</h2>
+
+    {% if leaves %}
+        {% for leave in leaves %}
+            <div>
+                <strong>{{ leave.employee }}</strong><br>
+                Leave: {{ leave.leave_type }}<br>
+                From: {{ leave.from_date }}<br>
+                To: {{ leave.to_date }}<br>
+                Reason: {{ leave.reason }}
+            </div>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No leave applications yet.</p>
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Employee Dashboard</title>
+</head>
+
+<body>
+
+    <h1>Leave Management System</h1>
+
+    <h2>Employee Dashboard</h2>
+
+    {% if employee %}
+        <p>
+            Welcome, <strong>{{ employee.name }}</strong>
+        </p>
+
+        <p>
+            User ID: <strong>{{ employee.username }}</strong>
+        </p>
+    {% endif %}
+
+    <hr>
+
+    <!-- ========================================= -->
+    <!-- APPLY FOR LEAVE -->
+    <!-- ========================================= -->
+
+    <h2>Apply for Leave</h2>
+
+    <form method="POST" action="{{ url_for('apply_leave') }}">
+
+        <!-- HOD -->
+        <label>Select HOD:</label>
+
+        <select name="hod_id" required>
+
+            <option value="">
+                -- Select HOD --
+            </option>
+
+            {% for hod in hods %}
+
+                <option value="{{ hod.id }}">
+                    {{ hod.name }} ({{ hod.username }})
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+
+        <!-- Leave Type -->
+        <label>Leave Type:</label>
+
+        <select name="leave_type" required>
+
+            <option value="">
+                -- Select Leave Type --
+            </option>
+
+            <option value="Casual Leave">
+                Casual Leave
+            </option>
+
+            <option value="Sick Leave">
+                Sick Leave
+            </option>
+
+            <option value="Earned Leave">
+                Earned Leave
+            </option>
+
+            <option value="Emergency Leave">
+                Emergency Leave
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <!-- From Date -->
+        <label>From Date:</label>
+
+        <input
+            type="date"
+            name="from_date"
+            required
+        >
+
+        <br><br>
+
+        <!-- To Date -->
+        <label>To Date:</label>
+
+        <input
+            type="date"
+            name="to_date"
+            required
+        >
+
+        <br><br>
+
+        <!-- Reason -->
+        <label>Reason:</label>
+
+        <br>
+
+        <textarea
+            name="reason"
+            rows="5"
+            cols="40"
+            required
+        ></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Apply for Leave
+        </button>
+
+    </form>
+
+    <hr>
+
+    <!-- ========================================= -->
+    <!-- MY LEAVE REQUESTS -->
+    <!-- ========================================= -->
+
+    <h2>My Leave Requests</h2>
+
+    {% if leaves %}
+
+        <table border="1" cellpadding="8">
+
+            <tr>
+
+                <th>Leave ID</th>
+
+                <th>Leave Type</th>
+
+                <th>From Date</th>
+
+                <th>To Date</th>
+
+                <th>Reason</th>
+
+                <th>Status</th>
+
+                <th>HOD Comment</th>
+
+            </tr>
+
+            {% for leave in leaves %}
+
+            <tr>
+
+                <td>
+                    {{ leave.id }}
+                </td>
+
+                <td>
+                    {{ leave.leave_type }}
+                </td>
+
+                <td>
+                    {{ leave.from_date }}
+                </td>
+
+                <td>
+                    {{ leave.to_date }}
+                </td>
+
+                <td>
+                    {{ leave.reason }}
+                </td>
+
+                <td>
+                    <strong>
+                        {{ leave.status }}
+                    </strong>
+                </td>
+
+                <td>
+                    {% if leave.hod_comment %}
+                        {{ leave.hod_comment }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    {% else %}
+
+        <p>
+            You have not applied for any leave yet.
+        </p>
+
+    {% endif %}
+
+    <br>
+
+    <hr>
+
+    <!-- ========================================= -->
+    <!-- LOGOUT -->
+    <!-- ========================================= -->
+
+    <a href="{{ url_for('logout') }}">
+        <button type="button">
+            Logout
+        </button>
+    </a>
+
+</body>
+
+</html>

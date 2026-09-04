@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Leave Management - Login</title>
+</head>
+
+<body>
+
+    <h1>Leave Management System</h1>
+
+    <h2>Login</h2>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+
+        <label>User ID:</label>
+        <input
+            type="text"
+            name="username"
+            inputmode="numeric"
+            pattern="[0-9]+"
+            maxlength="20"
+            required
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+        >
+
+        <br><br>
+
+        <label>Password:</label>
+        <input
+            type="password"
+            name="password"
+            required
+        >
+
+        <br><br>
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('register') }}">
+        Create a new account
+    </a>
+
+</body>
+
+</html>

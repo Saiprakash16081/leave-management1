@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HOD Dashboard - Leave Management</title>
+</head>
+
+<body>
+
+    <h1>HOD Dashboard</h1>
+
+    <p>Welcome, {{ hod.name }}</p>
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+    <hr>
+
+    <h2>Leave Requests</h2>
+
+    {% if leaves %}
+
+        <table border="1" cellpadding="10">
+
+            <tr>
+                <th>ID</th>
+                <th>Employee</th>
+                <th>Leave Type</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>HOD Comment</th>
+                <th>Action</th>
+            </tr>
+
+            {% for leave in leaves %}
+
+            <tr>
+                <td>{{ leave.id }}</td>
+
+                <td>
+                    {% set employee = User.query.get(leave.employee_id) %}
+                    {% if employee %}
+                        {{ employee.name }}
+                    {% else %}
+                        Unknown Employee
+                    {% endif %}
+                </td>
+
+                <td>{{ leave.leave_type }}</td>
+
+                <td>{{ leave.from_date }}</td>
+
+                <td>{{ leave.to_date }}</td>
+
+                <td>{{ leave.reason }}</td>
+
+                <td>{{ leave.status }}</td>
+
+                <td>
+                    {% if leave.hod_comment %}
+                        {{ leave.hod_comment }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+
+                <td>
+
+                    {% if leave.status == "Pending" %}
+
+                        <form method="POST"
+                              action="{{ url_for('update_leave', leave_id=leave.id, action='approve') }}">
+
+                            <input
+                                type="text"
+                                name="comment"
+                                placeholder="Comment"
+                                required
+                            >
+
+                            <button type="submit">
+                                Approve
+                            </button>
+
+                        </form>
+
+                        <br>
+
+                        <form method="POST"
+                              action="{{ url_for('update_leave', leave_id=leave.id, action='reject') }}">
+
+                            <input
+                                type="text"
+                                name="comment"
+                                placeholder="Comment"
+                                required
+                            >
+
+                            <button type="submit">
+                                Reject
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        No action available
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    {% else %}
+
+        <p>No leave requests found.</p>
+
+    {% endif %}
+
+</body>
+</html>
